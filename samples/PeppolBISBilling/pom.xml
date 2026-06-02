@@ -1,0 +1,95 @@
+<project xmlns="http://maven.apache.org/POM/4.0.0"
+         xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+         xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 https://maven.apache.org/xsd/maven-4.0.0.xsd">
+    <modelVersion>4.0.0</modelVersion>
+
+    <groupId>io.dscope.samples</groupId>
+    <artifactId>peppol-bis-billing-icp</artifactId>
+    <version>1.0.0-SNAPSHOT</version>
+    <name>Peppol BIS Billing ICP Camel Sample</name>
+    <description>Motoko Peppol billing canister exposed through Apache Camel REST routes.</description>
+
+    <properties>
+        <camel.version>4.20.0</camel.version>
+        <ic4j.camel.version>0.8.2</ic4j.camel.version>
+        <ic4j.base.version>0.8.0</ic4j.base.version>
+        <maven.compiler.source>21</maven.compiler.source>
+        <maven.compiler.target>21</maven.compiler.target>
+        <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
+        <exec.mainClass>org.apache.camel.main.Main</exec.mainClass>
+    </properties>
+
+    <dependencyManagement>
+        <dependencies>
+            <dependency>
+                <groupId>org.apache.camel</groupId>
+                <artifactId>camel-bom</artifactId>
+                <version>${camel.version}</version>
+                <type>pom</type>
+                <scope>import</scope>
+            </dependency>
+        </dependencies>
+    </dependencyManagement>
+
+    <dependencies>
+        <dependency>
+            <groupId>org.apache.camel</groupId>
+            <artifactId>camel-main</artifactId>
+        </dependency>
+        <dependency>
+            <groupId>org.apache.camel</groupId>
+            <artifactId>camel-yaml-dsl</artifactId>
+        </dependency>
+        <dependency>
+            <groupId>org.apache.camel</groupId>
+            <artifactId>camel-jackson</artifactId>
+        </dependency>
+        <dependency>
+            <groupId>org.apache.camel</groupId>
+            <artifactId>camel-netty-http</artifactId>
+        </dependency>
+        <dependency>
+            <groupId>org.ic4j</groupId>
+            <artifactId>ic4j-camel-core</artifactId>
+            <version>${ic4j.camel.version}</version>
+        </dependency>
+        <dependency>
+            <groupId>org.ic4j</groupId>
+            <artifactId>ic4j-agent</artifactId>
+            <version>${ic4j.base.version}</version>
+        </dependency>
+        <dependency>
+            <groupId>org.ic4j</groupId>
+            <artifactId>ic4j-java11transport</artifactId>
+            <version>${ic4j.base.version}</version>
+        </dependency>
+        <dependency>
+            <groupId>org.ic4j</groupId>
+            <artifactId>ic4j-candid</artifactId>
+            <version>${ic4j.base.version}</version>
+        </dependency>
+        <dependency>
+            <groupId>io.dscope</groupId>
+            <artifactId>dscope-camel-ubl</artifactId>
+            <version>1.0.0</version>
+        </dependency>
+        <dependency>
+            <groupId>ch.qos.logback</groupId>
+            <artifactId>logback-classic</artifactId>
+            <version>1.5.6</version>
+        </dependency>
+    </dependencies>
+
+    <build>
+        <plugins>
+            <plugin>
+                <groupId>org.codehaus.mojo</groupId>
+                <artifactId>exec-maven-plugin</artifactId>
+                <version>3.5.0</version>
+                <configuration>
+                    <mainClass>${exec.mainClass}</mainClass>
+                </configuration>
+            </plugin>
+        </plugins>
+    </build>
+</project>

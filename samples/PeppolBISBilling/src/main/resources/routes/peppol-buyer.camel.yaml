@@ -1,0 +1,90 @@
+- onException:
+    exception:
+      - java.lang.Exception
+    handled:
+      constant: "true"
+    steps:
+      - setHeader:
+          name: CamelHttpResponseCode
+          constant: "400"
+      - setHeader:
+          name: Content-Type
+          constant: application/json
+      - setBody:
+          simple: |
+            {
+              "ok": false,
+              "party": "buyer",
+              "error": "${exception.message}"
+            }
+
+- route:
+    id: buyer-send-order
+    from:
+      uri: netty-http:http://{{sample.http.host}}:{{sample.http.port}}/peppol/buyer/orders
+      parameters:
+        httpMethodRestrict: POST
+      steps:
+        - to:
+            uri: "ubl:unmarshal?documentType=order&type=xml"
+        - to:
+            uri: "ubl:marshal?documentType=order&type=xml&formattedOutput=true"
+        - to:
+            uri: "ic:update?url={{sample.ic.location}}&method=sendOrderXml&canisterId={{sample.ic.canister}}&loadIDL=true&outType=jackson&fetchRootKey=true"
+        - marshal:
+            json:
+              library: Jackson
+        - setHeader:
+            name: Content-Type
+            constant: application/json
+
+- route:
+    id: buyer-list-invoices
+    from:
+      uri: netty-http:http://{{sample.http.host}}:{{sample.http.port}}/peppol/buyer/invoices
+      parameters:
+        httpMethodRestrict: GET
+      steps:
+        - setBody:
+            simple: "${null}"
+        - to:
+            uri: "ic:query?url={{sample.ic.location}}&method=listBuyerInvoiceIds&canisterId={{sample.ic.canister}}&loadIDL=true&outType=jackson&fetchRootKey=true"
+        - marshal:
+            json:
+              library: Jackson
+        - setHeader:
+            name: Content-Type
+            constant: application/json
+
+- route:
+    id: buyer-get-invoice
+    from:
+      uri: netty-http:http://{{sample.http.host}}:{{sample.http.port}}/peppol/buyer/invoices/get
+      parameters:
+        httpMethodRestrict: GET
+      steps:
+        - setBody:
+            header: id
+        - to:
+            uri: "ic:query?url={{sample.ic.location}}&method=getInvoiceXml&canisterId={{sample.ic.canister}}&loadIDL=true&fetchRootKey=true"
+        - setHeader:
+            name: Content-Type
+            constant: application/xml
+
+- route:
+    id: buyer-get-party
+    from:
+      uri: netty-http:http://{{sample.http.host}}:{{sample.http.port}}/peppol/buyer
+      parameters:
+        httpMethodRestrict: GET
+      steps:
+        - setBody:
+            simple: "${null}"
+        - to:
+            uri: "ic:query?url={{sample.ic.location}}&method=getBuyer&canisterId={{sample.ic.canister}}&loadIDL=true&outType=jackson&fetchRootKey=true"
+        - marshal:
+            json:
+              library: Jackson
+        - setHeader:
+            name: Content-Type
+            constant: application/json

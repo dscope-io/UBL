@@ -1,0 +1,80 @@
+type ValidationResult = 
+ record {
+   documentKind: DocumentKind;
+   issues: vec ValidationIssue;
+   ok: bool;
+ };
+type ValidationIssue = 
+ record {
+   code: text;
+   message: text;
+ };
+type SubmitResult = 
+ record {
+   conversationId: opt text;
+   id: opt text;
+   ok: bool;
+   validation: ValidationResult;
+ };
+type PeppolMessage = 
+ record {
+   conversationId: text;
+   createdAt: int;
+   documentKind: DocumentKind;
+   id: text;
+   receiver: Party;
+   relatedOrderId: opt text;
+   sender: Party;
+   status: MessageStatus;
+   xml: text;
+ };
+type PartyRole = 
+ variant {
+   buyer;
+   supplier;
+ };
+type Party = 
+ record {
+   endpointId: text;
+   id: text;
+   name: text;
+   role: PartyRole;
+ };
+type MessageStatus = 
+ variant {
+   invoiced;
+   rejected;
+   sent;
+ };
+type InvoiceSubmission = 
+ record {
+   orderId: text;
+   xml: text;
+ };
+type DocumentKind = 
+ variant {
+   creditNote;
+   invoice;
+   order;
+ };
+service : {
+  getBuyer: () -> (Party) query;
+  getCreditNoteXml: (id: text) -> (text) query;
+  getInvoice: (id: text) -> (opt PeppolMessage) query;
+  getInvoiceXml: (id: text) -> (text) query;
+  getOrder: (id: text) -> (opt PeppolMessage) query;
+  getOrderXml: (id: text) -> (text) query;
+  getSupplier: () -> (Party) query;
+  listBuyerInvoiceIds: () -> (vec text) query;
+  listCreditNoteIds: () -> (vec text) query;
+  listInvoiceIds: () -> (vec text) query;
+  listSupplierOrderIds: () -> (vec text) query;
+  sendInvoiceForOrder: (input: InvoiceSubmission) -> (SubmitResult);
+  sendInvoiceForOrderPayload: (payload: text) -> (SubmitResult);
+  sendOrderXml: (xml: text) -> (SubmitResult);
+  submitCreditNoteXml: (xml: text) -> (SubmitResult);
+  submitInvoiceXml: (xml: text) -> (SubmitResult);
+  validateCreditNoteXml: (xml: text) -> (ValidationResult) query;
+  validateInvoiceXml: (xml: text) -> (ValidationResult) query;
+  validateOrderXml: (xml: text) -> (ValidationResult) query;
+}

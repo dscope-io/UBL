@@ -1,0 +1,35 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<Order xmlns="urn:oasis:names:specification:ubl:schema:xsd:Order-2"
+       xmlns:cac="urn:oasis:names:specification:ubl:schema:xsd:CommonAggregateComponents-2"
+       xmlns:cbc="urn:oasis:names:specification:ubl:schema:xsd:CommonBasicComponents-2">
+  <cbc:UBLVersionID>2.1</cbc:UBLVersionID>
+  <cbc:CustomizationID>urn:fdc:peppol.eu:poacc:trns:order:3</cbc:CustomizationID>
+  <cbc:ProfileID>urn:fdc:peppol.eu:poacc:bis:ordering:3</cbc:ProfileID>
+  <cbc:ID>PO-2026-0001</cbc:ID>
+  <cbc:IssueDate>2026-05-31</cbc:IssueDate>
+  <cac:BuyerCustomerParty>
+    <cac:Party>
+      <cbc:EndpointID schemeID="0192">987654321</cbc:EndpointID>
+      <cac:PartyLegalEntity>
+        <cbc:RegistrationName>Peppol Buyer</cbc:RegistrationName>
+      </cac:PartyLegalEntity>
+    </cac:Party>
+  </cac:BuyerCustomerParty>
+  <cac:SellerSupplierParty>
+    <cac:Party>
+      <cbc:EndpointID schemeID="0192">123456789</cbc:EndpointID>
+      <cac:PartyLegalEntity>
+        <cbc:RegistrationName>Peppol Supplier</cbc:RegistrationName>
+      </cac:PartyLegalEntity>
+    </cac:Party>
+  </cac:SellerSupplierParty>
+  <cac:OrderLine>
+    <cac:LineItem>
+      <cbc:ID>1</cbc:ID>
+      <cbc:Quantity unitCode="EA">1</cbc:Quantity>
+      <cac:Item>
+        <cbc:Name>Sample Peppol item</cbc:Name>
+      </cac:Item>
+    </cac:LineItem>
+  </cac:OrderLine>
+</Order>

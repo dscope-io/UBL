@@ -1,0 +1,8 @@
+{
+  "canisters": {
+    "peppol_billing": {
+      "main": "main.mo",
+      "type": "motoko"
+    }
+  }
+}

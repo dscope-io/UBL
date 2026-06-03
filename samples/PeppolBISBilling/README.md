@@ -32,17 +32,17 @@ The Camel surface is split into two route files:
 - `dfx`
 - Local Maven artifacts for `org.ic4j:ic4j-camel-core:0.8.2` and `io.dscope:dscope-camel-ubl:1.0.0`
 
-The UBL component is expected to come from `/Users/roman/Projects/DScope/CamelUBLComponent/pom.xml`. Install it after changing that component:
+The UBL component is expected to come from the sibling [dscope-camel-ubl](https://github.com/dscope-io/dscope-camel-ubl) repository. Install it after changing that component:
 
 ```bash
-cd /Users/roman/Projects/DScope/CamelUBLComponent
+cd ../../../CamelUBLComponent
 mvn -DskipTests install
 ```
 
 ## Run
 
 ```bash
-cd /Users/roman/Projects/DScope/UBL/samples/PeppolBISBilling
+cd samples/PeppolBISBilling
 ./run-local.sh
 ```
 

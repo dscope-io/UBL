@@ -1,5 +1,7 @@
 # UBL Motoko Samples
 
+![Blockchain-enabled Peppol billing cycle](samples/PeppolBISBilling/Blockchain_E-Invoicing_Process_Flow.png)
+
 This repository contains generated Motoko type definitions for UBL 2.1 message models and a working Peppol BIS Billing sample that demonstrates how to exchange UBL documents through an Internet Computer canister exposed via Apache Camel REST routes.
 
 UBL 2.1 is a broad library of standardized business documents for procurement, billing, logistics, transport, and related commercial workflows. The files under `messages/Motoko/ubl21/` are generated Motoko modules that mirror those document definitions. In this repository, the generated types are used primarily as message-model placeholders for the sample canister and Camel integration.
@@ -127,7 +129,7 @@ samples/
 - `dfx`
 - Local Maven artifacts for `org.ic4j:ic4j-camel-core:0.8.2` and `io.dscope:dscope-camel-ubl:1.0.0`
 
-The Camel UBL component is expected from the sibling project at `/Users/roman/Projects/DScope/CamelUBLComponent`.
+The Camel UBL component is provided by [dscope-camel-ubl](https://github.com/dscope-io/dscope-camel-ubl), and it depends on [ic4j-camel](https://github.com/ic4j/ic4j-camel) for the ICP integration layer.
 
 ## Running the sample
 

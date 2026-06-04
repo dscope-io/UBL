@@ -10,6 +10,31 @@ The route flow is component-only, matching the RosettaNet YAML sample style:
 HTTP XML -> dscope-camel-ubl unmarshal -> UBL Jakarta JAXB object -> dscope-camel-ubl marshal -> XML text -> ICP canister
 ```
 
+## Motoko ICP Messages
+
+The Motoko canister models the Peppol exchange as a small set of typed messages and validation results. These types live in `main.mo` and define the canister boundary for buyer/supplier document exchange.
+
+- `Party` - identifies the buyer or supplier, including an endpoint ID and role.
+- `PartyRole` - distinguishes the two participants in the sample: `#buyer` and `#supplier`.
+- `DocumentKind` - tags the business document being processed, such as `#order`, `#invoice`, or `#creditNote`.
+- `MessageStatus` - tracks whether a message is `#sent`, `#invoiced`, or `#rejected`.
+- `ValidationIssue` - captures a rule code and a human-readable validation message.
+- `ValidationResult` - returns whether a document passed validation and which issues were found.
+- `SubmitResult` - returns the created document id, conversation id, and validation outcome after submission.
+- `InvoiceSubmission` - wraps the order id together with invoice XML when the supplier generates an invoice for an order.
+- `PeppolMessage` - stores the full message record, including sender, receiver, document kind, related order, XML payload, status, and timestamp.
+
+The canister exposes these message flows:
+
+- `sendOrderXml` - accepts buyer order XML, validates it, and stores it as an order message.
+- `sendInvoiceForOrder` - accepts an order id plus invoice XML and creates an invoice tied to the original conversation.
+- `sendInvoiceForOrderPayload` - convenience entry point for submitting an order id and XML payload together.
+- `submitInvoiceXml` - submits an invoice directly without linking it to an order.
+- `submitCreditNoteXml` - submits a credit note message.
+- `validateOrderXml`, `validateInvoiceXml`, and `validateCreditNoteXml` - expose lightweight Peppol validation checks before a message is accepted.
+
+This model keeps the canister state and document lifecycle explicit, while the Camel routes continue to handle XML transport and integration concerns.
+
 ## Routes
 
 The Camel surface is split into two route files:
